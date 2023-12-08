@@ -38,6 +38,7 @@ router.get('/flights/:flightId', getFlightByNumber);
 
 router.get('/flight/:date', getFlightByDate);
 
+
 // Update a flight by flight number
 router.put('/flights/:flightNumber', updateFlight);
 <<<<<<< HEAD
