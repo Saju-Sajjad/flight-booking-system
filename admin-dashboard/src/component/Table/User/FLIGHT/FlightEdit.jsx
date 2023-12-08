@@ -1,74 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-
-function EditFlightForm() {
-  const [flight, setFlight] = useState({});
-  const [isLoading, setLoading] = useState(true);
-  const { id } = useParams();
-  const navigate = useNavigate();
-
-  const apiUrl = `http://localhost:8800/api/flights/flights/${id}`;
-
-  useEffect(() => {
-    getFlight();
-  }, [id]);
-
-  const getFlight = async () => {
-    try {
-      const response = await axios.get(apiUrl, { withCredentials: true });
-      const flightData = response.data;
-
-      setFlight(flightData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching flight:", error);
-    }
-  };
-
-  const handleSaveClick = () => {
-    // Add logic to save the edited flight details
-    console.log("Flight details saved:", flight);
-    // Redirect back to the flight details page
-    navigate(`/flights/${id}`);
-  };
-
-  const handleCancelClick = () => {
-    // Redirect back to the flight details page without saving changes
-    navigate(`/flights/${id}`);
-  };
-
-  return (
-    <>
-      <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800">Edit Flight</h1>
-      </div>
-
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          {/* Render a form with fields for editing flight details */}
-          <label>Flight Type:</label>
-          <input
-            type="text"
-            value={flight.flightType}
-            onChange={(e) => setFlight({ ...flight, flightType: e.target.value })}
-          />
-
-          {/* Add other form fields for editing other flight details */}
-          
-          <button onClick={handleSaveClick}>Save</button>
-          <button onClick={handleCancelClick}>Cancel</button>
-        </div>
-      )}
-    </>
-  );
-}
-
-export default EditFlightForm;
-=======
 // FlightEdit.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -136,4 +65,3 @@ function FlightEdit() {
 }
 
 export default FlightEdit;
->>>>>>> 31ffed3a5cfdbe63ff9c0fbb869f3657a69bef4d

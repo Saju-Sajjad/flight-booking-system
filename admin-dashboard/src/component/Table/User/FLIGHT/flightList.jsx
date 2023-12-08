@@ -12,7 +12,14 @@ function FlightList() {
   const apiUrl = "http://localhost:8800/api/flights/flights";
 
   useEffect(() => {
-    getFlights();
+    // Try to get flights from local storage on component mount
+    const storedFlights = JSON.parse(localStorage.getItem("flights"));
+    if (storedFlights) {
+      setFlights(storedFlights);
+      setLoading(false);
+    } else {
+      getFlights();
+    }
   }, []);
 
   const getFlights = async () => {
@@ -22,6 +29,9 @@ function FlightList() {
 
       if (Array.isArray(flightData.flights)) {
         setFlights(flightData.flights);
+
+        // Save flights to local storage after fetching
+        localStorage.setItem("flights", JSON.stringify(flightData.flights));
       } else {
         setFlights([]);
       }
@@ -31,15 +41,6 @@ function FlightList() {
       console.error("Error fetching flights:", error);
     }
   };
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 31ffed3a5cfdbe63ff9c0fbb869f3657a69bef4d
   const getRowId = (row) => row._id;
   const handleViewClick = (id) => {
     navigate(`/portal/flight-view/${id}`);
@@ -66,6 +67,7 @@ function FlightList() {
       return { status: "Completed", color: "gray" };
     }
   };
+  
 
   const handleDeleteClick = async (id) => {
     try {
@@ -125,56 +127,31 @@ function FlightList() {
       alert("Failed to cancel flight. Check the console for details.");
     }
   };
-
   const columns = [
-<<<<<<< HEAD
     { field: "_id", headerName: "ID", flex: 1 },
-    { field: "flightType", headerName: "Flight Type", flex: 1 },
     { field: "journeyAirport", headerName: "Departure Airport", flex: 1 },
     { field: "arrivalAirport", headerName: "Arrival Airport", flex: 1 },
-    { field: "journeyTime", headerName: "Departure Time", flex: 1 },
-    { field: "arrivalTime", headerName: "Arrival Time", flex: 1 },
-    { field: "hour", headerName: "Duration (hours)", flex: 1 },
-    
-=======
-    { field: '_id', headerName: 'ID', flex: 1 },
-    { field: 'journeyAirport', headerName: 'Departure Airport', flex: 1 },
-    { field: 'arrivalAirport', headerName: 'Arrival Airport', flex: 1 },
-    { field: 'journeyTime', headerName: 'Departure Time', flex: 1 },
-    { field: 'arrivalTime', headerName: 'Arrival Time', flex: 1 },
-    { field: 'hour', headerName: 'Duration (hours)', flex: 1 },
-    { field: 'airlineLogo', headerName: 'Airline Logo', flex: 1 },
-    { field: 'company', headerName: 'Company', flex: 1 },
-    { field: 'origin', headerName: 'Origin', flex: 1 },
-    { field: 'destination', headerName: 'Destination', flex: 1 },
-    { field: 'returnDate', headerName: 'Return Date', flex: 1 },
-    { field: 'journeyDate', headerName: 'Journey Date', flex: 1 },
-
-    // ... other fields
->>>>>>> 31ffed3a5cfdbe63ff9c0fbb869f3657a69bef4d
+    // { field: "journeyTime", headerName: "Departure Time", flex: 1 },
+    // { field: "arrivalTime", headerName: "Arrival Time", flex: 1 },
+    // { field: "hour", headerName: "Duration (hours)", flex: 1 },
+    // { field: "airlineLogo", headerName: "Airline Logo", flex: 1 },
+    // { field: "company", headerName: "Company", flex: 1 },
+    // { field: "origin", headerName: "Origin", flex: 1 },
+    // { field: "destination", headerName: "Destination", flex: 1 },
+    // { field: "returnDate", headerName: "Return Date", flex: 1 },
+    // { field: "journeyDate", headerName: "Journey Date", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
       width: 300, // Increase the width to accommodate all buttons
       renderCell: (params) => (
-<<<<<<< HEAD
         <div style={{ display: "flex", gap: "8px" }}>
           <button onClick={() => handleViewClick(params.row._id)}>View</button>
           <button onClick={() => handleEditClick(params.row._id)}>Edit</button>
           <button onClick={() => handleDeleteClick(params.row._id)}>Delete</button>
           <button onClick={() => handleDelayClick(params.row._id)}>Delay</button>
           <button onClick={() => handleCancelClick(params.row._id)}>Cancel</button>
-=======
-        <div>
-          <Link to={`/portal/flight-view/${params.id}`} style={{ marginRight: '8px' }}>
-            Flight View
-          </Link>
-          <Link to={`/portal/flight-edit/${params.id}`}>
-            Flight Edit
-          </Link>
-
->>>>>>> 31ffed3a5cfdbe63ff9c0fbb869f3657a69bef4d
-        </div>
+      </div>
       ),
     },
     {
@@ -187,17 +164,16 @@ function FlightList() {
           <div style={{ color: statusInfo.color, fontWeight: "bold" }}>
             {statusInfo.status}
             {params.row.delayed && (
-              <span style={{ color: "orange", marginLeft: "8px" }}>Delayed</span>
+              <span style={{ color: "orange", marginLeft: "8px" }}></span>
             )}
             {params.row.cancelled && (
-              <span style={{ color: "red", marginLeft: "8px" }}>Cancelled</span>
+              <span style={{ color: "red", marginLeft: "8px" }}></span>
             )}
           </div>
         );
       },
     },
   ];
-
 
   return (
     <>
